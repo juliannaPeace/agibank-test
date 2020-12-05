@@ -2,6 +2,8 @@ package com.julianna.agibanktest.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,5 +41,10 @@ public class Util {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	public static DateTimeFormatter flatFileName() {
+		
+		return DateTimeFormatter.ofPattern(("yyyy-MM-dd-HH_mm_ss"));
 	}
 }
