@@ -9,13 +9,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import com.julianna.agibanktest.entities.Cliente;
-import com.julianna.agibanktest.entities.Item;
+import com.julianna.agibanktest.entities.Venda;
 import com.julianna.agibanktest.entities.Vendedor;
 import com.julianna.agibanktest.interfaces.TipoDado;
 import com.julianna.agibanktest.utils.Constantes;
@@ -24,9 +26,9 @@ import com.julianna.agibanktest.utils.Util;
 @Service
 public class ProcessFileService {
 
-	private List<Cliente> listaClientes = new ArrayList<Cliente>();
-	private List<Vendedor> listaVendedores = new ArrayList<Vendedor>();
-	private List<Item> listaItens = new ArrayList<Item>();
+	private List<Cliente> clientes = new ArrayList<Cliente>();
+	private List<Vendedor> vendedores = new ArrayList<Vendedor>();
+	private Set<Venda> vendas = new HashSet<Venda>();
 
 	public void FileUploadLote(File filesPathIn) {
 
@@ -62,15 +64,15 @@ public class ProcessFileService {
 						Object object = Util.gerarEntidades(tipoDado, values[1], values[2], values[3]);
 
 						if (object instanceof Cliente) {
-							listaClientes.add((Cliente) object);
+							clientes.add((Cliente) object);
 						}
 
 						if (object instanceof Vendedor) {
-							listaVendedores.add((Vendedor) object);
+							vendedores.add((Vendedor) object);
 						}
 
-						if (object instanceof Item) {
-							listaItens.add((Item) object);
+						if (object instanceof Venda) {
+							vendas.add((Venda) object);
 						}
 					}
 
@@ -82,10 +84,10 @@ public class ProcessFileService {
 
 		}
 
-		gerarDadosConsolidados(listaClientes, listaVendedores, listaItens);
+		gerarDadosConsolidados(clientes, vendedores, vendas);
 	}
 
-	private void gerarDadosConsolidados(List<Cliente> clientes, List<Vendedor> vendedores, List<Item> itens) {
+	private void gerarDadosConsolidados(List<Cliente> clientes, List<Vendedor> vendedores, Set<Venda> vendas) {
 
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		StringBuilder stringBuilder = new StringBuilder();
@@ -97,6 +99,16 @@ public class ProcessFileService {
 		stringBuilder.append("Quantidade de Vendedores :");
 		stringBuilder.append(vendedores.size());
 		stringBuilder.append(System.getProperty("line.separator"));
+
+		vendas.forEach(venda -> {
+			stringBuilder.append("Id Venda:");
+			stringBuilder.append(venda.getSalesId());
+			stringBuilder.append(System.getProperty("line.separator"));
+			
+			stringBuilder.append("Total:");
+			stringBuilder.append(venda.getTotalSale());
+			stringBuilder.append(System.getProperty("line.separator"));
+		}); 
 
 		Util.createFile(stringBuilder, Constantes.HOMEPATH_OUT, timestamp + ".done.dat");
 

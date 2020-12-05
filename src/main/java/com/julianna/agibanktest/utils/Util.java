@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.julianna.agibanktest.entities.Cliente;
-import com.julianna.agibanktest.entities.Item;
+import com.julianna.agibanktest.entities.Venda;
 import com.julianna.agibanktest.entities.Vendedor;
 import com.julianna.agibanktest.interfaces.TipoDado;
 
@@ -19,7 +19,7 @@ public class Util {
 
 		mapEntities.put("001", new Vendedor());
 		mapEntities.put("002", new Cliente());
-		mapEntities.put("003", new Item());
+		mapEntities.put("003", new Venda());
 
 		return mapEntities;
 	}
