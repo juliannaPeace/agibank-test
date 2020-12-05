@@ -9,9 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -100,15 +102,35 @@ public class ProcessFileService {
 		stringBuilder.append(vendedores.size());
 		stringBuilder.append(System.getProperty("line.separator"));
 
-		vendas.forEach(venda -> {
-			stringBuilder.append("Id Venda:");
-			stringBuilder.append(venda.getSalesId());
-			stringBuilder.append(System.getProperty("line.separator"));
-			
-			stringBuilder.append("Total:");
-			stringBuilder.append(venda.getTotalSale());
-			stringBuilder.append(System.getProperty("line.separator"));
-		}); 
+//		vendas.forEach(venda -> {
+//			stringBuilder.append("Id Venda:");
+//			stringBuilder.append(venda.getSalesId());
+//			stringBuilder.append(", ");
+//			stringBuilder.append(venda.getSalesMan());
+//			stringBuilder.append(", ");
+//
+//			stringBuilder.append("Total:");
+//			stringBuilder.append(venda.getTotalSale());
+//			stringBuilder.append(System.getProperty("line.separator"));
+//		});
+
+		Venda bigSale = vendas.stream().max(Comparator.comparing(Venda::getTotalSale))
+				.orElseThrow(NoSuchElementException::new);
+		
+		Venda worstSale = vendas.stream().min(Comparator.comparing(Venda::getTotalSale))
+				.orElseThrow(NoSuchElementException::new);
+		
+		stringBuilder.append("Id venda mais cara :");
+		stringBuilder.append(bigSale.getSalesId());
+		stringBuilder.append(", Valor da venda :");
+		stringBuilder.append(bigSale.getTotalSale());
+		stringBuilder.append(System.getProperty("line.separator"));
+		
+		stringBuilder.append("O pior Vendedor :");
+		stringBuilder.append(worstSale.getSalesMan());
+		stringBuilder.append(", Valor da venda :");
+		stringBuilder.append(worstSale.getTotalSale());
+		stringBuilder.append(System.getProperty("line.separator"));
 
 		Util.createFile(stringBuilder, Constantes.HOMEPATH_OUT, timestamp + ".done.dat");
 
