@@ -29,7 +29,7 @@ import com.julianna.agibanktest.utils.Util;
 @Service
 public class ProcessFileService {
 
-	public void FileUploadLote(Optional<File> filesPathIn) {
+	public void fileProcessSalesLote(Optional<File> filesPathIn) {
 
 		List<Cliente> clientes = new ArrayList<Cliente>();
 		List<Vendedor> vendedores = new ArrayList<Vendedor>();

@@ -24,7 +24,7 @@ public class CronJobReadFiles {
 	public void readFilesSalesForMinute() {
 		try {
 			Optional<File> file = Optional.ofNullable(new File(Constantes.HOMEPATH_IN));
-			processFileService.FileUploadLote(file);
+			processFileService.fileProcessSalesLote(file);
 		} catch (NoSuchElementException ne) {
 			log.getLogger(CronJobReadFiles.class.getName()).log(Level.SEVERE, null, ne);
 		}
