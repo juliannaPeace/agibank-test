@@ -10,24 +10,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class Item implements Serializable, TipoDado{
+public class Item implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private int quantity;
 	private String itens;
 	private String vendedor;
-	private BigDecimal price;
+	private Venda venda;
 	
-	
-	@Override
-	public Item gerarEntidade(String id, String itens, String vendedor) {
-		
-		this.id = Long.parseLong(id);
-		this.itens = itens;
-		this.vendedor = vendedor;
-		
-		return this;
-	}
 }
