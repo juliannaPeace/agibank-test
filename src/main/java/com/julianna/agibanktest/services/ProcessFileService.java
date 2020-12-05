@@ -29,11 +29,11 @@ import com.julianna.agibanktest.utils.Util;
 @Service
 public class ProcessFileService {
 
-	private List<Cliente> clientes = new ArrayList<Cliente>();
-	private List<Vendedor> vendedores = new ArrayList<Vendedor>();
-	private Set<Venda> vendas = new HashSet<Venda>();
-
 	public void FileUploadLote(Optional<File> filesPathIn) {
+
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		List<Vendedor> vendedores = new ArrayList<Vendedor>();
+		Set<Venda> vendas = new HashSet<Venda>();
 
 		for (File file : filesPathIn.get().listFiles()) {
 
@@ -122,7 +122,7 @@ public class ProcessFileService {
 
 	}
 
-	private void getQuantidadeCliente(List<Cliente> cliente, StringBuilder stringBuilder) {
+	private void getQuantidadeCliente(List<Cliente> clientes, StringBuilder stringBuilder) {
 		stringBuilder.append("Quantidade de Clientes :");
 		stringBuilder.append(clientes.size());
 		stringBuilder.append(System.getProperty("line.separator"));
