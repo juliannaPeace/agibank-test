@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -32,9 +33,9 @@ public class ProcessFileService {
 	private List<Vendedor> vendedores = new ArrayList<Vendedor>();
 	private Set<Venda> vendas = new HashSet<Venda>();
 
-	public void FileUploadLote(File filesPathIn) {
+	public void FileUploadLote(Optional<File> filesPathIn) {
 
-		for (File file : filesPathIn.listFiles()) {
+		for (File file : filesPathIn.get().listFiles()) {
 
 			if (!file.getName().endsWith(".dat")) {
 				continue;
@@ -42,7 +43,8 @@ public class ProcessFileService {
 
 			try {
 
-				byte[] bytes = Files.readAllBytes(Paths.get(filesPathIn.getAbsolutePath() + "/" + file.getName()));
+				byte[] bytes = Files
+						.readAllBytes(Paths.get(filesPathIn.get().getAbsolutePath() + "/" + file.getName()));
 
 				BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
 
@@ -91,18 +93,22 @@ public class ProcessFileService {
 
 	private void gerarDadosConsolidados(List<Cliente> clientes, List<Vendedor> vendedores, Set<Venda> vendas) {
 
+		if (clientes.isEmpty()) {
+			return;
+		}
+
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		StringBuilder stringBuilder = new StringBuilder();
 
-		stringBuilder.append("Quantidade de Clientes :");
-		stringBuilder.append(clientes.size());
-		stringBuilder.append(System.getProperty("line.separator"));
+		getQuantidadeCliente(clientes, stringBuilder);
+		getQuantidadeVendedor(vendedores, stringBuilder);
+		getVendaMaisCara(vendas, stringBuilder);
+		getPiorVendedor(vendas, stringBuilder);
+		
+		Util.createFile(stringBuilder, Constantes.HOMEPATH_OUT, timestamp + ".done.dat");
 
-		stringBuilder.append("Quantidade de Vendedores :");
-		stringBuilder.append(vendedores.size());
-		stringBuilder.append(System.getProperty("line.separator"));
 
-//		vendas.forEach(venda -> {
+		//		vendas.forEach(venda -> {
 //			stringBuilder.append("Id Venda:");
 //			stringBuilder.append(venda.getSalesId());
 //			stringBuilder.append(", ");
@@ -114,26 +120,43 @@ public class ProcessFileService {
 //			stringBuilder.append(System.getProperty("line.separator"));
 //		});
 
+	}
+
+	private void getQuantidadeCliente(List<Cliente> cliente, StringBuilder stringBuilder) {
+		stringBuilder.append("Quantidade de Clientes :");
+		stringBuilder.append(clientes.size());
+		stringBuilder.append(System.getProperty("line.separator"));
+	}
+
+	private void getQuantidadeVendedor(List<Vendedor> vendedores, StringBuilder stringBuilder) {
+
+		stringBuilder.append("Quantidade de Vendedores :");
+		stringBuilder.append(vendedores.size());
+		stringBuilder.append(System.getProperty("line.separator"));
+	}
+
+	private void getVendaMaisCara(Set<Venda> vendas, StringBuilder stringBuilder) {
+
 		Venda bigSale = vendas.stream().max(Comparator.comparing(Venda::getTotalSale))
 				.orElseThrow(NoSuchElementException::new);
-		
-		Venda worstSale = vendas.stream().min(Comparator.comparing(Venda::getTotalSale))
-				.orElseThrow(NoSuchElementException::new);
-		
+
 		stringBuilder.append("Id venda mais cara :");
 		stringBuilder.append(bigSale.getSalesId());
 		stringBuilder.append(", Valor da venda :");
 		stringBuilder.append(bigSale.getTotalSale());
 		stringBuilder.append(System.getProperty("line.separator"));
-		
+	}
+
+	private void getPiorVendedor(Set<Venda> vendas, StringBuilder stringBuilder) {
+
+		Venda worstSale = vendas.stream().min(Comparator.comparing(Venda::getTotalSale))
+				.orElseThrow(NoSuchElementException::new);
+
 		stringBuilder.append("O pior Vendedor :");
 		stringBuilder.append(worstSale.getSalesMan());
 		stringBuilder.append(", Valor da venda :");
 		stringBuilder.append(worstSale.getTotalSale());
 		stringBuilder.append(System.getProperty("line.separator"));
-
-		Util.createFile(stringBuilder, Constantes.HOMEPATH_OUT, timestamp + ".done.dat");
-
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.julianna.agibanktest;
 
 import java.io.File;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,7 +14,7 @@ import com.julianna.agibanktest.utils.Constantes;
 
 @SpringBootApplication
 public class AgibankTestApplication implements CommandLineRunner {
-	
+
 	@Autowired
 	private ProcessFileService processFileService;
 
@@ -25,8 +27,12 @@ public class AgibankTestApplication implements CommandLineRunner {
 		createWithNotExistHomePathIn();
 		createWithNotExistHomePathOut();
 
-		File file = new File(Constantes.HOMEPATH_IN);
-		processFileService.FileUploadLote(file);
+		try {
+			Optional<File> file = Optional.ofNullable(new File(Constantes.HOMEPATH_IN));
+			processFileService.FileUploadLote(file);
+		} catch (NoSuchElementException ne) {
+			ne.printStackTrace();
+		}
 
 	}
 
