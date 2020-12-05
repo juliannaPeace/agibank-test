@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +23,10 @@ import com.julianna.agibanktest.entities.Item;
 import com.julianna.agibanktest.entities.Vendedor;
 import com.julianna.agibanktest.interfaces.TipoDado;
 import com.julianna.agibanktest.utils.Constantes;
-import com.julianna.agibanktest.utils.MapEntity;
+import com.julianna.agibanktest.utils.Util;
 
 @Controller
 public class UploadFileController {
-
-	private static Logger logger = LoggerFactory.getLogger(UploadFileController.class);
 
 	@GetMapping("/")
 	public String index() {
@@ -49,7 +45,7 @@ public class UploadFileController {
 
 			byte[] bytes = file.getBytes();
 
-			Path path = Paths.get(Constantes.HOMEPATH_OUT + file.getOriginalFilename());
+			Path path = Paths.get(Constantes.HOMEPATH_IN + file.getOriginalFilename());
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
 
@@ -66,7 +62,7 @@ public class UploadFileController {
 
 					String[] values = lines[i].split("ç");
 
-					Map<String, TipoDado> mapEntities = MapEntity.getMapEntities();
+					Map<String, TipoDado> mapEntities = Util.getMapEntities();
 
 					TipoDado tipoDado = mapEntities.get(values[0]);
 
@@ -74,7 +70,7 @@ public class UploadFileController {
 						continue;
 					}
 
-					Object object = MapEntity.gerarEntidades(tipoDado, values[1], values[2], values[3]);
+					Object object = Util.gerarEntidades(tipoDado, values[1], values[2], values[3]);
 
 					if(object instanceof Cliente) {
 						listaClientes.add((Cliente) object);
@@ -91,8 +87,6 @@ public class UploadFileController {
 
 			}
 
-			gerarDadosConsolidados(listaClientes,listaVendedores,listaItens);
-			
 			Files.write(path, bytes);
 
 			redirectAttributes.addFlashAttribute("message",
@@ -109,10 +103,4 @@ public class UploadFileController {
 	public String uploadStatus() {
 		return "uploadStatus";
 	}
-	
-	private void gerarDadosConsolidados(List<Cliente> clientes, List<Vendedor> vendedores, List<Item> itens) {
-		logger.info("Quantidade de Clientes   " + clientes.size());
-		logger.info("Quantidade de Vendedores " + vendedores.size());
-	}
-
 }
