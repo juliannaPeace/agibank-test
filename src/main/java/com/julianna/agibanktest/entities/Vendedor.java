@@ -5,18 +5,18 @@ import java.math.BigDecimal;
 
 import com.julianna.agibanktest.interfaces.TipoDado;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
-@EqualsAndHashCode(exclude={"id", "cpf", "salary"})
+@Data @NoArgsConstructor
+@EqualsAndHashCode(exclude={"cpf", "salary"})
 public class Vendedor implements Serializable,TipoDado{
 
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
 	private String cpf;
 	private String name;
 	private BigDecimal salary;

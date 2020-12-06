@@ -7,13 +7,13 @@ import java.util.Map;
 
 import com.julianna.agibanktest.interfaces.TipoDado;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude={"listItens", "salesMan","totalSale"})
 public class Venda implements Serializable, TipoDado {
@@ -25,8 +25,6 @@ public class Venda implements Serializable, TipoDado {
 	private String listItens;
 
 	private String salesMan;
-
-	public static Map<String, BigDecimal> mapSalesMan = new HashMap<>();
 
 	private BigDecimal totalSale = new BigDecimal(0);
 

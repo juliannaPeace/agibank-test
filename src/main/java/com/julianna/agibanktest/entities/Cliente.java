@@ -4,18 +4,17 @@ import java.io.Serializable;
 
 import com.julianna.agibanktest.interfaces.TipoDado;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class Cliente implements Serializable, TipoDado {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
 	private String cnpj;
 	private String name;
 	private String businessArea;
