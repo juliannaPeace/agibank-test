@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="refresh" content="60">
+</head>
+
 <body>
 
-<h1>Spring Boot file upload example</h1>
+	<h1>Upload em lote de Arquivo de Vendas</h1>
 
-<form method="POST" action="/upload" enctype="multipart/form-data">
-    <input type="file" name="files" multiple/><br/><br/>
-    <input type="submit" value="Submit" />
-</form>
+	<form method="POST" action="/upload" enctype="multipart/form-data">
+		<input type="file" name="files" multiple /><br /> <br /> <input
+			type="submit" value="Submit" />
+
+		<table>
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Diretório</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${files.empty}">
+					<td colspan="2">Nenhum arquivo foi encontrado</td>
+				</tr>
+				<tr th:each="file : ${files}">
+					<td><span th:text="${file.name}"> Title </span></td>
+					<td><span th:text="${file.absolutePath}"> Author </span></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</form>
 
 </body>
 </html>
