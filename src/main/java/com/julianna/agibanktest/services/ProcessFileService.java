@@ -16,10 +16,13 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
 import com.julianna.agibanktest.entities.Cliente;
+import com.julianna.agibanktest.entities.FileOut;
 import com.julianna.agibanktest.entities.Venda;
 import com.julianna.agibanktest.entities.Vendedor;
 import com.julianna.agibanktest.interfaces.TipoDado;
@@ -35,11 +38,7 @@ public class ProcessFileService {
 		List<Vendedor> vendedores = new ArrayList<Vendedor>();
 		Set<Venda> vendas = new HashSet<Venda>();
 
-		for (File file : filesPathIn.get().listFiles()) {
-
-			if (!file.getName().endsWith(".dat")) {
-				continue;
-			}
+		Stream.of(filesPathIn.get().listFiles()).filter(file -> file.getName().endsWith(".dat")).forEach(file -> {
 
 			try {
 
@@ -86,7 +85,7 @@ public class ProcessFileService {
 				e.printStackTrace();
 			}
 
-		}
+		});
 
 		gerarDadosConsolidados(clientes, vendedores, vendas);
 	}
@@ -159,4 +158,10 @@ public class ProcessFileService {
 		stringBuilder.append(System.getProperty("line.separator"));
 	}
 
+	public List<FileOut> listAllFilesPathOut(Optional<File> filesPathOut) {
+
+		return Stream.of(filesPathOut.get().listFiles())
+				.map(file -> new FileOut(file.getName(), file.getAbsolutePath())).collect(Collectors.toList());
+
+	}
 }
