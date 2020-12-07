@@ -1,10 +1,7 @@
 package com.julianna.agibanktest.services;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -40,17 +37,9 @@ public class ProcessFileService {
 
 		Stream.of(filesPathIn.get().listFiles()).filter(file -> file.getName().endsWith(".dat")).forEach(file -> {
 
-			try {
-
-				byte[] bytes = Files
-						.readAllBytes(Paths.get(filesPathIn.get().getAbsolutePath() + "/" + file.getName()));
-
-				BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
-
-				String linha = null;
-
-				while ((linha = reader.readLine()) != null) {
-					String[] lines = linha.split(System.getProperty("line.separator"));
+			try (Stream<String> stream = Files
+					.lines(Paths.get(filesPathIn.get().getAbsolutePath() + "/" + file.getName()))) {
+				stream.map(lines -> lines.split(System.getProperty("line.separator"))).forEach((String[] lines) -> {
 
 					for (int i = 0; i < lines.length; i++) {
 
@@ -78,9 +67,7 @@ public class ProcessFileService {
 							vendas.add((Venda) object);
 						}
 					}
-
-				}
-
+				});
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
