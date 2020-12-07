@@ -41,7 +41,7 @@ $ java -jar nomedoarquivogerado.jar
 <br/> Você terá acesso a um botão de upload em lote.
 Também poderá visualizar uma tabela contendo todos os arquivos que foram processados e o resultado desse processamento.
 
-![alt text](https://github.com/juliannaPeace/agibank-test/blob/main/upload_file.jpeg)
+![alt text](https://raw.githubusercontent.com/juliannaPeace/agibank-test/main/upload_file.jpeg)
 
 
 2 - Colocando os arquivos de forma manual, dentro do diretório %HOMEPATH%/data/in.
