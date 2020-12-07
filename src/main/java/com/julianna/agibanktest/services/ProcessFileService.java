@@ -18,11 +18,11 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
-import com.julianna.agibanktest.entities.Cliente;
+import com.julianna.agibanktest.entities.Client;
 import com.julianna.agibanktest.entities.FileOut;
-import com.julianna.agibanktest.entities.Venda;
-import com.julianna.agibanktest.entities.Vendedor;
-import com.julianna.agibanktest.interfaces.TipoDado;
+import com.julianna.agibanktest.entities.Sale;
+import com.julianna.agibanktest.entities.SalesMan;
+import com.julianna.agibanktest.interfaces.DataGeneric;
 import com.julianna.agibanktest.utils.Constantes;
 import com.julianna.agibanktest.utils.Util;
 
@@ -31,9 +31,9 @@ public class ProcessFileService {
 
 	public void fileProcessSalesLote(Optional<File> filesPathIn) {
 
-		List<Cliente> clientes = new ArrayList<Cliente>();
-		List<Vendedor> vendedores = new ArrayList<Vendedor>();
-		Set<Venda> vendas = new HashSet<Venda>();
+		List<Client> clients = new ArrayList<Client>();
+		List<SalesMan> salesMan = new ArrayList<SalesMan>();
+		Set<Sale> sales = new HashSet<Sale>();
 
 		Stream.of(filesPathIn.get().listFiles()).filter(file -> file.getName().endsWith(".dat")).forEach(file -> {
 
@@ -45,26 +45,26 @@ public class ProcessFileService {
 
 						String[] values = lines[i].split("ç");
 
-						Map<String, TipoDado> mapEntities = Util.getMapEntities();
+						Map<String, DataGeneric> mapEntities = Util.getMapEntities();
 
-						TipoDado tipoDado = mapEntities.get(values[0]);
+						DataGeneric dataGeneric = mapEntities.get(values[0]);
 
-						if (tipoDado == null) {
+						if (dataGeneric == null) {
 							continue;
 						}
 
-						Object object = Util.gerarEntidades(tipoDado, values[1], values[2], values[3]);
+						Object object = Util.gerarEntidades(dataGeneric, values[1], values[2], values[3]);
 
-						if (object instanceof Cliente) {
-							clientes.add((Cliente) object);
+						if (object instanceof Client) {
+							clients.add((Client) object);
 						}
 
-						if (object instanceof Vendedor) {
-							vendedores.add((Vendedor) object);
+						if (object instanceof SalesMan) {
+							salesMan.add((SalesMan) object);
 						}
 
-						if (object instanceof Venda) {
-							vendas.add((Venda) object);
+						if (object instanceof Sale) {
+							sales.add((Sale) object);
 						}
 					}
 				});
@@ -74,43 +74,43 @@ public class ProcessFileService {
 
 		});
 
-		gerarDadosConsolidados(clientes, vendedores, vendas);
+		generateConsolidatedData(clients, salesMan, sales);
 	}
 
-	private void gerarDadosConsolidados(List<Cliente> clientes, List<Vendedor> vendedores, Set<Venda> vendas) {
+	private void generateConsolidatedData(List<Client> clients, List<SalesMan> salesMan, Set<Sale> sales) {
 
-		if (clientes.isEmpty()) {
+		if (clients.isEmpty()) {
 			return;
 		}
 
 		LocalDateTime today = LocalDateTime.now();
 		StringBuilder stringBuilder = new StringBuilder();
 
-		getQuantidadeCliente(clientes, stringBuilder);
-		getQuantidadeVendedor(vendedores, stringBuilder);
-		getVendaMaisCara(vendas, stringBuilder);
-		getPiorVendedor(vendas, stringBuilder);
+		getAmountClient(clients, stringBuilder);
+		getAmountSalesMan(salesMan, stringBuilder);
+		getMostExpensiveSale(sales, stringBuilder);
+		getWorseSalesMan(sales, stringBuilder);
 
 		Util.createFile(stringBuilder, Constantes.HOMEPATH_OUT,
 				"file_sales_" + today.format(Util.flatFileName()) + ".done.dat");
 	}
 
-	private void getQuantidadeCliente(List<Cliente> clientes, StringBuilder stringBuilder) {
+	private void getAmountClient(List<Client> clients, StringBuilder stringBuilder) {
 		stringBuilder.append("Quantidade de Clientes :");
-		stringBuilder.append(clientes.size());
+		stringBuilder.append(clients.size());
 		stringBuilder.append(System.getProperty("line.separator"));
 	}
 
-	private void getQuantidadeVendedor(List<Vendedor> vendedores, StringBuilder stringBuilder) {
+	private void getAmountSalesMan(List<SalesMan> salesMan, StringBuilder stringBuilder) {
 
 		stringBuilder.append("Quantidade de Vendedores :");
-		stringBuilder.append(vendedores.size());
+		stringBuilder.append(salesMan.size());
 		stringBuilder.append(System.getProperty("line.separator"));
 	}
 
-	private void getVendaMaisCara(Set<Venda> vendas, StringBuilder stringBuilder) {
+	private void getMostExpensiveSale(Set<Sale> sales, StringBuilder stringBuilder) {
 
-		Venda bigSale = vendas.stream().max(Comparator.comparing(Venda::getTotalSale))
+		Sale bigSale = sales.stream().max(Comparator.comparing(Sale::getTotalSale))
 				.orElseThrow(NoSuchElementException::new);
 
 		stringBuilder.append("Id venda mais cara :");
@@ -120,9 +120,9 @@ public class ProcessFileService {
 		stringBuilder.append(System.getProperty("line.separator"));
 	}
 
-	private void getPiorVendedor(Set<Venda> vendas, StringBuilder stringBuilder) {
+	private void getWorseSalesMan(Set<Sale> sales, StringBuilder stringBuilder) {
 
-		Venda worstSale = vendas.stream().min(Comparator.comparing(Venda::getTotalSale))
+		Sale worstSale = sales.stream().min(Comparator.comparing(Sale::getTotalSale))
 				.orElseThrow(NoSuchElementException::new);
 
 		stringBuilder.append("O pior Vendedor :");

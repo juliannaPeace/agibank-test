@@ -2,7 +2,7 @@ package com.julianna.agibanktest.entities;
 
 import java.io.Serializable;
 
-import com.julianna.agibanktest.interfaces.TipoDado;
+import com.julianna.agibanktest.interfaces.DataGeneric;
 
 import lombok.Data;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-public class Cliente implements Serializable, TipoDado {
+public class Client implements Serializable, DataGeneric {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class Cliente implements Serializable, TipoDado {
 	private String businessArea;
 
 	@Override
-	public Cliente gerarEntidade(String cnpj, String name, String businessArea) {
+	public Client generateEntity(String cnpj, String name, String businessArea) {
 		this.cnpj = cnpj;
 		this.name = name;
 		this.businessArea = businessArea;

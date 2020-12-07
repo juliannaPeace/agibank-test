@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.julianna.agibanktest.interfaces.TipoDado;
+import com.julianna.agibanktest.interfaces.DataGeneric;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude={"listItens", "salesMan","totalSale"})
-public class Venda implements Serializable, TipoDado {
+public class Sale implements Serializable, DataGeneric {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class Venda implements Serializable, TipoDado {
 	private BigDecimal totalSale = new BigDecimal(0);
 
 	@Override
-	public Venda gerarEntidade(String salesId, String listItens, String salesMan) {
+	public Sale generateEntity(String salesId, String listItens, String salesMan) {
 
 		this.salesId = salesId;
 		this.listItens = listItens.replace("[", "").replaceAll("]", "");

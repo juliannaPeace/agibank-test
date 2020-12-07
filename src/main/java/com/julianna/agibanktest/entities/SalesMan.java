@@ -3,7 +3,7 @@ package com.julianna.agibanktest.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import com.julianna.agibanktest.interfaces.TipoDado;
+import com.julianna.agibanktest.interfaces.DataGeneric;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Data @NoArgsConstructor
 @EqualsAndHashCode(exclude={"cpf", "salary"})
-public class Vendedor implements Serializable,TipoDado{
+public class SalesMan implements Serializable,DataGeneric{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,7 +22,7 @@ public class Vendedor implements Serializable,TipoDado{
 	private BigDecimal salary;
 	
 	@Override
-	public Vendedor gerarEntidade(String cpf, String name, String salary) {
+	public SalesMan generateEntity(String cpf, String name, String salary) {
 		
 		this.cpf = cpf;
 		this.name = name;

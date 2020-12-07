@@ -2,32 +2,31 @@ package com.julianna.agibanktest.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.julianna.agibanktest.entities.Cliente;
-import com.julianna.agibanktest.entities.Venda;
-import com.julianna.agibanktest.entities.Vendedor;
-import com.julianna.agibanktest.interfaces.TipoDado;
+import com.julianna.agibanktest.entities.Client;
+import com.julianna.agibanktest.entities.Sale;
+import com.julianna.agibanktest.entities.SalesMan;
+import com.julianna.agibanktest.interfaces.DataGeneric;
 
 public class Util {
 	
 	
-	public static Map<String, TipoDado> getMapEntities() {
+	public static Map<String, DataGeneric> getMapEntities() {
 
-		Map<String, TipoDado> mapEntities = new HashMap<>();
+		Map<String, DataGeneric> mapEntities = new HashMap<>();
 
-		mapEntities.put("001", new Vendedor());
-		mapEntities.put("002", new Cliente());
-		mapEntities.put("003", new Venda());
+		mapEntities.put("001", new SalesMan());
+		mapEntities.put("002", new Client());
+		mapEntities.put("003", new Sale());
 
 		return mapEntities;
 	}
 
-	public static Object gerarEntidades(TipoDado tipoDado, String value1, String value2, String value3) {
-		return tipoDado.gerarEntidade(value1, value2, value3);
+	public static Object gerarEntidades(DataGeneric tipoDado, String value1, String value2, String value3) {
+		return tipoDado.generateEntity(value1, value2, value3);
 	}
 
 	public static void createFile(StringBuilder stringBuilder, String path, String fileName) {
