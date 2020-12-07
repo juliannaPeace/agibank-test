@@ -44,4 +44,13 @@ Também poderá visualizar uma tabela contendo todos os arquivos que foram proce
 2 - Colocando os arquivos de forma manual, dentro do diretório %HOMEPATH%/data/in.
 
 A cada 1 minuto o processo é rodado para verificar se existem arquivos .dat dentro do diretório padrão e então os dados são processados e salvos
-dentro do diretório padrão %HOMEPATH%/data/in.
+dentro do diretório %HOMEPATH%/data/out.
+
+
+**Tecnologias utilizadas**
+- Java 11
+- Spring Framework
+- Docker
+- Thymeleaf
+- Lombok
+- Maven
