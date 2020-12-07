@@ -1,0 +1,9 @@
+version: '3'
+services:
+ docker-app:
+    image: agibanktest/spring-boot-docker-app
+    restart: unless-stopped
+    build:
+      context: .
+    ports:
+      - "8080:8080"
