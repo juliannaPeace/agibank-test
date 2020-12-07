@@ -21,7 +21,7 @@ O que o sistema deve produzir:
 ● ID da venda mais cara <br/>
 ● O pior vendedor <br/>
 
-Os sistema lê dados localizados em %HOMEPATH%/data/in, e gera os dados de processamento no diretório: %HOMEPATH%/data/out.
+Os sistema lê dados localizados em %HOMEPATH%/data/in, e gera os dados de processamento no diretório: %HOMEPATH%/data/out. <br/>
 *Obs: Ao executar o sistema, o mesmo cria, caso não exista, os direrórios listados acima.*
 
 ### Para o build da aplicação, execute o seguinte comando :
@@ -31,6 +31,10 @@ $ mvn clean package
 ### Para rodar a aplicação em Docker, execute o seguinte comando:
 ```sh
 $ docker-compose up
+```
+### Para rodar a aplicação de forma manual, execute o seguinte comando:
+```sh
+$ java -jar nomedoarquivogerado.jar
 ```
 ## Modos de testar a aplicação:
 1 - Através do endereço localizado em http://localhost:8080 
