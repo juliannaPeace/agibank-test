@@ -147,8 +147,15 @@ public class ProcessFileService {
 
 	public List<FileOut> listAllFilesPathOut(Optional<File> filesPathOut) {
 
-		return Stream.of(filesPathOut.get().listFiles())
-				.map(file -> new FileOut(file.getName(), file.getAbsolutePath())).collect(Collectors.toList());
+		return Stream.of(filesPathOut.get().listFiles()).map(file -> {
+			try {
+				return new FileOut(file.getName(), file.getAbsolutePath(),
+						new String(Files.readAllBytes(file.toPath())));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}).collect(Collectors.toList());
 
 	}
 }

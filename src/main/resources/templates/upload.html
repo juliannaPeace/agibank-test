@@ -1,37 +1,59 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta http-equiv="refresh" content="60">
+<meta charset="UTF-8" />
+<meta http-equiv="refresh" content="60">
+<meta name="viewport" content="width=device-width" />
+<title>Upload de Arquivos</title>
+<link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet" />
+<link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}"
+	rel="stylesheet" />
 </head>
 
 <body>
 
-	<h1>Upload em lote de Arquivo de Vendas</h1>
+	<div class="panel panel-default" style="margin: 10px">
+		<div class="panel-heading">
+			<h1>Upload em lote de Arquivo de Vendas</h1>
+		</div>
 
-	<form method="POST" action="/upload" enctype="multipart/form-data">
-		<input type="file" name="files" multiple /><br /> <br /> <input
-			type="submit" value="Submit" />
+		<form method="POST" action="/upload" enctype="multipart/form-data"
+			class="form-inline" style="margin: 20px 0">
+			<input type="file" name="files" multiple class="btn btn-primary"/><br /> <br /> 
+			<center>
+				<input type="submit" value="Enviar" class="btn btn-primary"/>
+			</center>
 
-		<table>
-			<thead>
-				<tr>
-					<th>Nome</th>
-					<th>Diretório</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:if="${files.empty}">
-					<td colspan="2">Nenhum arquivo foi encontrado</td>
-				</tr>
-				<tr th:each="file : ${files}">
-					<td><span th:text="${file.name}"> Title </span></td>
-					<td><span th:text="${file.absolutePath}"> Author </span></td>
-				</tr>
-			</tbody>
-		</table>
+			<h3 style="margin: 10px 10px">Lista de Arquivos Processados</h3>
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Diretório</th>
+							<th>Conteúdo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${files.empty}">
+							<td colspan="2">Nenhum arquivo foi encontrado</td>
+						</tr>
+						<tr th:each="file : ${files}">
+							<td><span th:text="${file.name}"> Nome </span></td>
+							<td><span th:text="${file.absolutePath}"> Diretório </span></td>
+							<td><span th:text="${file.context}"> Conteúdo </span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
-	</form>
+		</form>
 
+		<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	</div>
 </body>
 </html>
