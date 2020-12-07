@@ -93,19 +93,6 @@ public class ProcessFileService {
 
 		Util.createFile(stringBuilder, Constantes.HOMEPATH_OUT,
 				"file_sales_" + today.format(Util.flatFileName()) + ".done.dat");
-
-		// vendas.forEach(venda -> {
-//			stringBuilder.append("Id Venda:");
-//			stringBuilder.append(venda.getSalesId());
-//			stringBuilder.append(", ");
-//			stringBuilder.append(venda.getSalesMan());
-//			stringBuilder.append(", ");
-//
-//			stringBuilder.append("Total:");
-//			stringBuilder.append(venda.getTotalSale());
-//			stringBuilder.append(System.getProperty("line.separator"));
-//		});
-
 	}
 
 	private void getQuantidadeCliente(List<Cliente> clientes, StringBuilder stringBuilder) {
